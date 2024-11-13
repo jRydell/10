@@ -3,20 +3,17 @@ import { StyleSheet, View } from "react-native";
 import { ThingForm } from "./components/ThingForm";
 import { ThingList } from "./components/ThingList";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 type Thing = {
   name: string;
   age: string;
-  id: string;
 };
-
 export default function App() {
   const [things, setThings] = useState<Thing[]>([]);
 
-  const addThing = (thing: Omit<Thing, "id">) => {
+  const addThing = (thing: Thing) => {
     if (thing.name.trim() && thing.age.trim()) {
-      setThings((prevThings) => [...prevThings, { ...thing, id: uuidv4() }]);
+      setThings((prevThings) => [...prevThings, thing]);
     }
   };
 
