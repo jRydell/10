@@ -1,9 +1,10 @@
 import React from "react";
 import { View, StyleSheet, TextInput, Button } from "react-native";
 import { useState } from "react";
+import uuid from "react-native-uuid";
 
 type ThingformProps = {
-  addThing: (thing: { name: string; age: string }) => void;
+  addThing: (thing: { name: string; age: string; id: string }) => void;
 };
 
 export function ThingForm({ addThing }: ThingformProps) {
@@ -13,7 +14,7 @@ export function ThingForm({ addThing }: ThingformProps) {
   });
 
   const handlePress = () => {
-    addThing(thing);
+    addThing({ ...thing, id: uuid.v4() });
     setThing({ name: "", age: "" });
   };
 

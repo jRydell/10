@@ -2,14 +2,15 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 
 type ThingListProps = {
-  things: { name: string; age: string }[];
+  things: { name: string; age: string; id: string }[];
 };
 
 export function ThingList({ things }: ThingListProps) {
+  console.log(things);
   return (
     <View style={styles.container}>
-      {things.map((thing, index) => (
-        <View key={index} style={styles.thingContainer}>
+      {things.map((thing) => (
+        <View key={thing.id} style={styles.thingContainer}>
           <Text style={styles.thingText}>
             Name: {thing.name} Age: {thing.age}
           </Text>

@@ -7,6 +7,7 @@ import { useState } from "react";
 type Thing = {
   name: string;
   age: string;
+  id: string;
 };
 export default function App() {
   const [things, setThings] = useState<Thing[]>([]);
