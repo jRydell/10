@@ -9,6 +9,7 @@ type Thing = {
   age: string;
   id: string;
 };
+
 export default function App() {
   const [things, setThings] = useState<Thing[]>([]);
 
@@ -18,12 +19,16 @@ export default function App() {
     }
   };
 
+  const deleteThing = (id: string) => {
+    setThings((prevThings) => prevThings.filter((thing) => thing.id !== id));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.top}></View>
       <View style={styles.main}>
         <ThingForm addThing={addThing} />
-        <ThingList things={things} />
+        <ThingList things={things} deleteThing={deleteThing} />
       </View>
       <StatusBar style="auto" />
       <View style={styles.bottom}></View>

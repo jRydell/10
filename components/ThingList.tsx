@@ -1,23 +1,42 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import SwipeableListItem from "../components/SwipeableListItem";
 
-type ThingListProps = {
-  things: { name: string; age: string; id: string }[];
+type Thing = {
+  name: string;
+  age: string;
+  id: string;
 };
 
-export function ThingList({ things }: ThingListProps) {
+type ThingListProps = {
+  things: Thing[];
+  deleteThing: (id: string) => void;
+};
+
+export function ThingList({ things, deleteThing }: ThingListProps) {
   console.log(things);
-  return (
-    <View style={styles.container}>
-      {things.map((thing) => (
-        <View key={thing.id} style={styles.thingContainer}>
-          <Text style={styles.thingText}>
-            Name: {thing.name} Age: {thing.age}
-          </Text>
-          <Text style={styles.closeButton}>X</Text>
-        </View>
-      ))}
+
+  const renderThingContent = (thing: Thing) => (
+    <View style={styles.thingContainer}>
+      <Text style={styles.thingText}>
+        Name: {thing.name}, Age: {thing.age}
+      </Text>
     </View>
+  );
+
+  const renderItem = ({ item }: { item: Thing }) => (
+    <SwipeableListItem onDelete={() => deleteThing(item.id)}>
+      {renderThingContent(item)}
+    </SwipeableListItem>
+  );
+
+  return (
+    <FlatList
+      data={things}
+      renderItem={renderItem}
+      keyExtractor={(thing) => thing.id}
+      contentContainerStyle={styles.container}
+    />
   );
 }
 
@@ -36,10 +55,6 @@ const styles = StyleSheet.create({
   },
   thingText: {
     fontSize: 18,
-    color: "white",
-  },
-  closeButton: {
-    fontSize: 20,
     color: "white",
   },
 });
