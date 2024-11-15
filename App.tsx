@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   main: {
+    marginTop: 100,
     backgroundColor: "white",
     width: "100%",
     flex: 1,
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bottom: {
+    marginTop: 50,
     backgroundColor: "lightblue",
     width: "100%",
     height: 60,

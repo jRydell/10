@@ -15,7 +15,7 @@ export function ThingForm({ addThing }: ThingformProps) {
 
   const handlePress = () => {
     addThing({ ...thing, id: uuid.v4() });
-    setThing({ name: "", age: "" });
+    //setThing({ name: "", age: "" });
   };
 
   return (
