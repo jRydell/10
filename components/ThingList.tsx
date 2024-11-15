@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   thingContainer: {
+    borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
@@ -54,12 +53,16 @@ const SwipeableListItem = ({
       },
       // Handle what happens when the user releases the swipe
       onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dx < -swipeThreshold / 2) {
-          // If swipe exceeds half the threshold, animate to full delete position
-          Animated.spring(translateX, {
-            toValue: -swipeThreshold,
+        if (gestureState.dx < -swipeThreshold) {
+          // If swipe exceeds the threshold, animate smoothly off the screen and call onDelete
+          Animated.timing(translateX, {
+            toValue: -500, // Move the item far off-screen
+            duration: 200,
             useNativeDriver: true,
-          }).start();
+          }).start(() => {
+            onDelete(); // Call the delete function passed in props
+            translateX.setValue(0); // Reset position for potential reuse
+          });
         } else {
           // Otherwise, reset position to 0
           Animated.spring(translateX, {
@@ -71,30 +74,11 @@ const SwipeableListItem = ({
     })
   ).current;
 
-  // Function to handle delete button press with animation off-screen
-  const handleDeletePress = () => {
-    Animated.timing(translateX, {
-      toValue: -500, // Move the item far off-screen
-      duration: 200,
-      useNativeDriver: true,
-    }).start(() => {
-      onDelete(); // Call the delete function passed in props
-      translateX.setValue(0); // Reset position for potential reuse
-    });
-  };
-
   // Render the swipeable list item component
   return (
     <View style={styles.container}>
       {/* Hidden container for delete button, visible when swiped */}
-      <View style={styles.hiddenContainer}>
-        <TouchableOpacity
-          style={[styles.deleteButton, deleteContainerStyle]}
-          onPress={handleDeletePress}
-        >
-          <Text style={[styles.deleteText, deleteTextStyle]}>{deleteText}</Text>
-        </TouchableOpacity>
-      </View>
+
       {/* Main animated view containing the child elements */}
       <Animated.View
         style={[styles.animatedView, { transform: [{ translateX }] }]}
@@ -112,28 +96,9 @@ const styles = StyleSheet.create({
     position: "relative", // Allows positioning of delete button overlay
     backgroundColor: "#fff",
   },
-  hiddenContainer: {
-    position: "absolute", // Positioned to overlap animated view
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "red", // Red background for delete button
-  },
+
   animatedView: {
     backgroundColor: "#fff", // Background for main view
-  },
-  deleteButton: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center", // Center delete text within button
-  },
-  deleteText: {
-    color: "#fff", // White text color for delete text
-    fontWeight: "bold",
   },
 });
 
