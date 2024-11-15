@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, TextInput, Button } from "react-native";
 import { useState } from "react";
 import uuid from "react-native-uuid";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 type ThingformProps = {
   addThing: (thing: { name: string; age: string; id: string }) => void;

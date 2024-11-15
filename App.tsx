@@ -1,63 +1,27 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
-import { ThingForm } from "./components/ThingForm";
-import { ThingList } from "./components/ThingList";
-import { useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { ThingApp } from "./components/ThingApp";
 
-type Thing = {
-  name: string;
-  age: string;
-  id: string;
+export type RootStackTypes = {
+  Home: undefined;
+};
+
+const Stack = createStackNavigator<RootStackTypes>();
+
+const RootStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={ThingApp} />
+    </Stack.Navigator>
+  );
 };
 
 export default function App() {
-  const [things, setThings] = useState<Thing[]>([]);
-
-  const addThing = (thing: Thing) => {
-    if (thing.name.trim() && thing.age.trim()) {
-      setThings((prevThings) => [...prevThings, thing]);
-    }
-  };
-
-  const deleteThing = (id: string) => {
-    setThings((prevThings) => prevThings.filter((thing) => thing.id !== id));
-  };
-
   return (
-    <View style={styles.container}>
-      <View style={styles.top}></View>
-      <View style={styles.main}>
-        <ThingForm addThing={addThing} />
-        <ThingList things={things} deleteThing={deleteThing} />
-      </View>
-      <StatusBar style="auto" />
-      <View style={styles.bottom}></View>
-    </View>
+    <>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  top: {
-    backgroundColor: "lightblue",
-    width: "100%",
-    height: 60,
-  },
-  main: {
-    marginTop: 100,
-    backgroundColor: "white",
-    width: "100%",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bottom: {
-    marginTop: 50,
-    backgroundColor: "lightblue",
-    width: "100%",
-    height: 60,
-  },
-});
